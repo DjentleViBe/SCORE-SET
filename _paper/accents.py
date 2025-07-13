@@ -116,14 +116,14 @@ plt.close()
 
 # Target point
 x = [0, 1]
-y = [0.5, 0.5]
+y = [1.0, 1.0]
 plt.figure(figsize = (10,5))
 plt.scatter(x, y, color = 'k', s = 400)
 plt.plot([0, 1],[0, 0], color = 'gray', linewidth = 0.01)
 plt.plot([0, 1],[0.5, 0.5], color = 'gray', linewidth = 0.01)
 plt.plot([0, 1],[1.0, 1.0], color = 'gray', linewidth = 0.01)
 
-plt.plot([0.0, 1.],[0.5, 0.5], color = 'k', linestyle = '--')
+plt.plot([0.0, 1.],[1.0, 1.0], color = 'k', linestyle = '--')
 plt.axis('off')
 plt.tight_layout()
 plt.savefig(current_dir + '/bend_4_chart.pdf', dpi = 200)
