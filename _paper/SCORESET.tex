@@ -1,7 +1,7 @@
 \documentclass[twoside,11pt]{article}
 
 \usepackage{blindtext}
-
+\usepackage{float}
 % Any additional packages needed should be included after jmlr2e.
 % Note that jmlr2e.sty includes epsfig, amssymb, natbib and graphicx,
 % and defines many common macros, such as 'proof' and 'example'.
@@ -64,7 +64,7 @@ to better reflect the nuances of real-world guitar playing. Dataset available at
 \end{abstract}
 
 \begin{keywords}
-  Dataset, Guitar, Tablature, Transformers, Sequence Learning
+  Dataset, Guitar, Tablature, Transformer, Sequence Learning
 \end{keywords}
 
 \section{Introduction}
@@ -102,29 +102,70 @@ fret position, while the duration is quantized to musical beats. The guitar used
 Both single notes and chords are automatically encoded along with their corresponding beat durations.
 
 To begin with, an overview of articulations to be used in 
-the dataset is provided. These are deemed essential for capturing the expressive nuances of 
+the dataset and their tablature is provided. These are deemed essential for capturing the expressive nuances of 
 guitar performance.
-\subsection{Accents}
+\subsection{Expressions}
 Accentuation in playing refer to emphasising specific notes or rhythms to create dynamics and expression in music. 
 \subsubsection{Palm mute}
 Palm mute - A technique of lightly resting the edge of palm on the strings near bridge while plucking or strumming.
 \subsubsection{Bends}
-Pushing or pulling a string sideways across the fretboard, raising its pitch. 
+Pushing or pulling a string sideways across the fretboard, raising its pitch.
+\begin{figure}[htbp]
+  \centering
+\includegraphics[trim={40 980 690 100}, clip, width=0.135\linewidth]{bend_1.pdf}
+\includegraphics[trim={40 980 690 100}, clip, width=0.135\linewidth]{bend_2.pdf}
+\includegraphics[trim={40 980 690 100}, clip, width=0.135\linewidth]{bend_3.pdf}
+\includegraphics[trim={40 980 690 100}, clip, width=0.135\linewidth]{bend_4.pdf}
+\includegraphics[trim={40 980 690 100}, clip, width=0.135\linewidth]{bend_5.pdf}
+\includegraphics[trim={40 980 690 100}, clip, width=0.135\linewidth]{bend_6.pdf}
+\includegraphics[trim={40 980 690 100}, clip, width=0.135\linewidth]{bend_7.pdf}
+\caption{Bend types and their pitch variations.}
+  \label{fig:bend}
+\end{figure}
 \subsubsection{Tremolo bar}
-A tremolo bar or whammy bar is a device attached to the bridge of a guitar that allows bending the pitch of notes by pushing or pulling on the bar. 
+A tremolo bar or whammy bar is a device attached to the bridge of a guitar that 
+allows bending the pitch of notes by pushing or pulling on the bar.
+\begin{figure}[htbp]
+  \centering
+\includegraphics[trim={40 980 690 100}, clip, width=0.195\linewidth]{trem_1.pdf}
+\includegraphics[trim={40 980 690 100}, clip, width=0.195\linewidth]{trem_2.pdf}
+\includegraphics[trim={40 980 690 100}, clip, width=0.195\linewidth]{trem_4.pdf}
+\includegraphics[trim={40 980 690 100}, clip, width=0.195\linewidth]{trem_5.pdf}
+\caption{Tremlo types and their pitch variations.}
+  \label{fig:trem}
+\end{figure}
 \subsubsection{Slide}
 Smoothly moving up or down the fretboard without lifting off on the string, creating a seamless transition between notes.
+\begin{figure}[htbp]
+  \centering
+\includegraphics[trim={40 1040 690 100}, clip, width=0.16\linewidth]{slide_1.pdf}
+\includegraphics[trim={40 1040 690 100}, clip, width=0.16\linewidth]{slide_2.pdf}
+\includegraphics[trim={40 1040 690 100}, clip, width=0.16\linewidth]{slide_3.pdf}
+\includegraphics[trim={40 1040 690 100}, clip, width=0.16\linewidth]{slide_4.pdf}
+\includegraphics[trim={40 1040 690 100}, clip, width=0.16\linewidth]{slide_5.pdf}
+\includegraphics[trim={40 1040 690 100}, clip, width=0.16\linewidth]{slide_6.pdf}
+\caption{Slide types}
+  \label{fig:slide}
+\end{figure}
 \subsubsection{Dead note}
 (muted note or ghost note)
 Muting the string to produce a percussive sound.
 \subsubsection{Hammer on / pull off}
 Allows playing 2 notes in succession without picking the second note. Pressing down onto a higher fret to play a note without picking it, producing smooth legato transition between notes. 
-Pulling off a higher fretted note while the lower fret note is still pressed. 
+Pulling off a higher fretted note while the lower fret note is still pressed.
 \subsubsection{Vibrato}
-Repeated bending and releasing of a note to create subtle pitch variation.
+Repeated bending and releasing a note to create subtle pitch variation
 \subsubsection{Harmonic - Natural}
 Producing bell-like, chime sound by lightly touching a string at specific points along the fretboard. 
-
+\begin{figure}[htbp]
+  \centering
+\includegraphics[trim={40 1040 690 100}, clip, width=0.22\linewidth]{dead.pdf}
+\includegraphics[trim={40 1030 690 100}, clip, width=0.22\linewidth]{hammer.pdf}
+\includegraphics[trim={40 1020 690 100}, clip, width=0.22\linewidth]{vibrato.pdf}
+\includegraphics[trim={40 1040 710 100}, clip, width=0.22\linewidth]{harmonic_1.pdf}
+\caption{Dead note, Hammer On, Vibrato, Natural Harmonic}
+  \label{fig:harmonic}
+\end{figure}
 \section{Statistics}
 
 \acks{All acknowledgements go at the end of the paper before appendices and references.
