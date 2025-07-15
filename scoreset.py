@@ -153,10 +153,18 @@ def midi_to_gp5(midi_path, gp5_path, string_tuning=[64, 59, 55, 50, 45, 40]):
 # Usage
 duration_note, start_tick, notevalue = midi_to_gp5("./MIDI-Unprocessed_SMF_02_R1_2004_01-05_ORIG_MID--AUDIO_02_R1_2004_05_Track05_wav.midi", "output.gp5")
 
-def makegpro(duration, start, noteval):
-
+def makegpro(duration, start, noteval, tolerence):
+    note_collect = []
+    l_val = 0
+    for n_val, note in enumerate(noteval):
+        if n_val != 0:
+            if start[n_val] - start [n_val - 1] <= tolerence:
+                print("barred",start[n_val],start[n_val-1] )
+        else:
+            print(note)
     return 0
 
+makegpro(duration_note, start_tick, notevalue, 55)
 
 
 # datasetdownload()
