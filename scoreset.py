@@ -67,6 +67,14 @@ def ticks_to_duration(ticks, tpq):
     else:
         return 1           # whole note
 
+def find_string_and_fret(note_number, string_tuning, max_fret=24):
+    for string_index, tuning_note in enumerate(string_tuning):
+        fret = note_number - tuning_note
+        if 0 <= fret <= max_fret:
+            # Return string number (1-based: 1 = high E)
+            return (string_index + 1, fret)
+    return None  # Note can't be played on any string
+
 
 def midi_to_gp5(midi_path, gp5_path, string_tuning=[64, 59, 55, 50, 45, 40]):
     mid = mido.MidiFile(midi_path)
@@ -88,9 +96,11 @@ def midi_to_gp5(midi_path, gp5_path, string_tuning=[64, 59, 55, 50, 45, 40]):
 
     note_starts = {}  # note -> start_tick
     current_tick = 0
-
+    tot_measure = 0
     for track in mid.tracks:
         for msg in track:
+            if tot_measure > 1:
+                break
             current_tick += msg.time
             #print(msg.time)
 
@@ -99,14 +109,15 @@ def midi_to_gp5(midi_path, gp5_path, string_tuning=[64, 59, 55, 50, 45, 40]):
             
             elif (msg.type == 'note_off') or (msg.type == 'note_on' and msg.velocity == 0):
                 if msg.note in note_starts:
+                       
                         midi_note = msg.note
                         start = note_starts.pop(msg.note)
                         duration = current_tick - start
                         dur_value = clip_to_nearest_duration(duration, mid.ticks_per_beat)
-
+                        tot_measure += 1 / dur_value
                         # Basic fret/string assignment (e.g., all on 1st string)
-                        string_number = 1
-                        fret = 3
+                       
+                        string_number, fret = find_string_and_fret(msg.note, string_tuning, 23)
                         if fret < 0 or fret > 24:
                             continue  # skip unplayable notes
 
@@ -121,7 +132,9 @@ def midi_to_gp5(midi_path, gp5_path, string_tuning=[64, 59, 55, 50, 45, 40]):
                         current_beat.notes.append(note_collect[l_val])
                         
                         l_val += 1
-                        break
+                        print(tot_measure)
+                        
+                        # break
 
     gp.write(song, gp5_path)
     print(f"Guitar Pro file saved to {gp5_path}")
