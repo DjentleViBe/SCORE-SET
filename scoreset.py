@@ -36,6 +36,21 @@ import mido
 import guitarpro as gp
 from guitarpro import Song, Track, Measure, Voice, Beat, Note, Duration
 
+def clip_to_nearest_duration(ticks, ticks_per_beat):
+    # Precompute standard durations in ticks
+    duration_map = {
+        int(ticks_per_beat * 4): 1,       # whole
+        int(ticks_per_beat * 2): 2,       # half
+        int(ticks_per_beat * 1): 4,       # quarter
+        int(ticks_per_beat * 0.5): 8,     # eighth
+        int(ticks_per_beat * 0.25): 16,   # 16th
+        int(ticks_per_beat * 0.125): 32,  # 32nd
+        int(ticks_per_beat * 0.0625): 64  # 64th
+    }
+    # Find closest
+    closest_ticks = min(duration_map.keys(), key=lambda x: abs(x - ticks))
+    return duration_map[closest_ticks]
+
 def ticks_to_duration(ticks, tpq):
     ratio = ticks / tpq  # ratio to quarter note
     
@@ -87,7 +102,7 @@ def midi_to_gp5(midi_path, gp5_path, string_tuning=[64, 59, 55, 50, 45, 40]):
                         midi_note = msg.note
                         start = note_starts.pop(msg.note)
                         duration = current_tick - start
-                        dur_value = ticks_to_duration(duration, mid.ticks_per_beat)
+                        dur_value = clip_to_nearest_duration(duration, mid.ticks_per_beat)
 
                         # Basic fret/string assignment (e.g., all on 1st string)
                         string_number = 1
