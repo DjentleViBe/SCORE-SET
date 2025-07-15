@@ -119,7 +119,7 @@ def midi_to_gp5(midi_path, gp5_path, string_tuning=[64, 59, 55, 50, 45, 40]):
                         start = note_starts.pop(msg.note)
                         duration = current_tick - start
                         dur_value = clip_to_nearest_duration(duration, mid.ticks_per_beat)
-                        duration_note.append(duration)
+                        duration_note.append(dur_value)
                         notevalue.append(msg.note)
                         tot_measure += 1 / dur_value
                         # Basic fret/string assignment (e.g., all on 1st string)
@@ -154,6 +154,7 @@ def midi_to_gp5(midi_path, gp5_path, string_tuning=[64, 59, 55, 50, 45, 40]):
 duration_note, start_tick, notevalue = midi_to_gp5("./MIDI-Unprocessed_SMF_02_R1_2004_01-05_ORIG_MID--AUDIO_02_R1_2004_05_Track05_wav.midi", "output.gp5")
 
 def makegpro(duration, start, noteval):
+
     return 0
 
 
