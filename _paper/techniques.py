@@ -1,4 +1,7 @@
 import matplotlib.pyplot as plt
+import os
+current_file_path = os.path.abspath(__file__)
+current_dir = os.path.dirname(current_file_path)
 
 LABELS = ['BEND_NOTE_1', 
 'BEND_NOTE_2',
@@ -25,7 +28,7 @@ LABELS = ['BEND_NOTE_1',
 
 VALUES = [2477, 
 804,
-0,
+1256,
 2025,
 1765,
 0,
@@ -58,4 +61,4 @@ plt.ylabel('Count ratio')
 #plt.tight_layout()
 plt.xticks(rotation = 90, ha = 'right', fontsize = 7)
 plt.subplots_adjust(bottom=0.25)
-plt.savefig('accent_probability.pdf', dpi = 200)
+plt.savefig(current_dir + '/accent_probability.pdf', dpi = 200)
