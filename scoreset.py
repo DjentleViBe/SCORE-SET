@@ -94,6 +94,10 @@ def midi_to_gp5(midi_path, gp5_path, string_tuning=[64, 59, 55, 50, 45, 40]):
     note_collect = []
     l_val = 0
 
+    duration_note = []
+    start_tick = []
+    notevalue = []
+
     note_starts = {}  # note -> start_tick
     current_tick = 0
     tot_measure = 0
@@ -106,14 +110,17 @@ def midi_to_gp5(midi_path, gp5_path, string_tuning=[64, 59, 55, 50, 45, 40]):
 
             if msg.type == 'note_on' and msg.velocity > 0:
                 note_starts[msg.note] = current_tick
-            
+                start_tick.append(current_tick)
+
             elif (msg.type == 'note_off') or (msg.type == 'note_on' and msg.velocity == 0):
                 if msg.note in note_starts:
-                       
+                        
                         midi_note = msg.note
                         start = note_starts.pop(msg.note)
                         duration = current_tick - start
                         dur_value = clip_to_nearest_duration(duration, mid.ticks_per_beat)
+                        duration_note.append(duration)
+                        notevalue.append(msg.note)
                         tot_measure += 1 / dur_value
                         # Basic fret/string assignment (e.g., all on 1st string)
                        
@@ -138,9 +145,16 @@ def midi_to_gp5(midi_path, gp5_path, string_tuning=[64, 59, 55, 50, 45, 40]):
 
     gp.write(song, gp5_path)
     print(f"Guitar Pro file saved to {gp5_path}")
+    print("Duration", duration_note)
+    print("start",start_tick)
+    print("note",notevalue)
+    return duration_note, start_tick, notevalue
 
 # Usage
-midi_to_gp5("./MIDI-Unprocessed_SMF_02_R1_2004_01-05_ORIG_MID--AUDIO_02_R1_2004_05_Track05_wav.midi", "output.gp5")
+duration_note, start_tick, notevalue = midi_to_gp5("./MIDI-Unprocessed_SMF_02_R1_2004_01-05_ORIG_MID--AUDIO_02_R1_2004_05_Track05_wav.midi", "output.gp5")
+
+def makegpro(duration, start, noteval):
+    return 0
 
 
 
