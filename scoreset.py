@@ -5,6 +5,9 @@ import io
 import os
 from midihelper import midi_to_note_label
 from guitarhelper import findnewstring, find_string_and_fret
+from guitarprohelper import clip_to_nearest_duration, insert_rest_beat
+import mido
+import guitarpro as gp
 
 def datasetdownload():
     # URL of the dataset
@@ -33,25 +36,6 @@ def datasetdownload():
         zip_ref.extractall("maestro_dataset")
 
     print("Done! Dataset is in the 'maestro_dataset' folder.")
-
-import mido
-import guitarpro as gp
-from guitarpro import Song, Track, Measure, Voice, Beat, Note, Duration
-
-def clip_to_nearest_duration(ticks, ticks_per_beat):
-    # Precompute standard durations in ticks
-    duration_map = {
-        int(ticks_per_beat * 4): 1,       # whole
-        int(ticks_per_beat * 2): 2,       # half
-        int(ticks_per_beat * 1): 4,       # quarter
-        int(ticks_per_beat * 0.5): 8,     # eighth
-        int(ticks_per_beat * 0.25): 16,   # 16th
-        int(ticks_per_beat * 0.125): 32,  # 32nd
-        int(ticks_per_beat * 0.0625): 64  # 64th
-    }
-    # Find closest
-    closest_ticks = min(duration_map.keys(), key=lambda x: abs(x - ticks))
-    return duration_map[closest_ticks]
 
 def ticks_to_duration(ticks, tpq):
     ratio = ticks / tpq  # ratio to quarter note
@@ -92,13 +76,15 @@ def midi_to_gp5(midi_path):
                     start = note_starts.pop(msg.note)
                     duration = current_tick - start
                     dur_value = clip_to_nearest_duration(duration, mid.ticks_per_beat)
-                    
+                    tot_measure += 1 / dur_value
                     notevalue.append(msg.note)
                     start_tick.append(start)
                     duration_note.append(dur_value)
                         # break
-            if len(notevalue) >= 8 and len(notevalue) == len(duration_note):
+            if tot_measure >= 2:
                 break
+            #if len(notevalue) >= 8 and len(notevalue) == len(duration_note):
+            #    break
     # Combine all into tuples
     combined = list(zip(start_tick, notevalue, duration_note))
 
@@ -134,22 +120,26 @@ def makegpro(duration, start, noteval, tolerence):
 
     song.tracks[0].measures[0].hasTimeSignature  = True 
     song.tracks[0].measures[0].timeSignature.denominator.value = 4
-    voice = song.tracks[0].measures[0].voices[0]
+    tot_duration = 0
+    current_measure = song.tracks[0].measures[0]  # start with the first
+    voice = current_measure.voices[0]
     note_collect = []
     beat_collect = []
     string_collect = []
     fret_collect = []
     kval_collect = []
     l_val = 0
-    k_val =0
+    k_val = 0
     string_tuning=[64, 59, 55, 50, 45, 40]
     reuse_last_beat = False
+
+    # voice, tot_duration = insert_rest_beat(start[0], 480, voice)
     for n_val, note in enumerate(noteval):
-        if n_val != 0:
+        if k_val != 0:
             if start[n_val] - start [n_val - 1] <= tolerence:
                 # print("barred",start[n_val],start[n_val-1])
                 reuse_last_beat = True
-        
+
         if reuse_last_beat:
             current_beat = beat_collect[k_val - 1]
             if duration[n_val] < beat_collect[k_val - 1].duration.value:
@@ -157,8 +147,14 @@ def makegpro(duration, start, noteval, tolerence):
             current_beat.status = gp.models.BeatStatus.normal
             reuse_last_beat = False
             string_number, fret = find_string_and_fret(note, string_tuning, 23)
-            if string_number == string_collect[l_val -1]:
+            used_strings = {n.string for n in current_beat.notes}
+            if string_number in used_strings:
                 fret, string_number = findnewstring(note, string_number, string_tuning)
+                if string_number not in used_strings and 0 <= fret <= 24:
+                    string_number, fret = string_number, fret
+                else:
+                    print(f"Warning: Skipping note {note} at tick {start[n_val]} due to string conflict.")
+                    continue
             kval_collect.append(k_val - 1)
         else:
             string_number, fret = find_string_and_fret(note, string_tuning, 23)
@@ -177,8 +173,25 @@ def makegpro(duration, start, noteval, tolerence):
         note_collect[l_val].string = string_number
         note_collect[l_val].beat.duration.value = duration[n_val]
         current_beat.notes.append(note_collect[l_val])
-                        
+        tot_duration += 1 / duration[n_val]
         l_val += 1
+
+        if tot_duration >= 1:
+            track = song.tracks[0]
+            header = gp.models.MeasureHeader(number=len(track.measures))
+            # Append the header to the song
+            song.measureHeaders.append(header)
+            # Now create the measure with the header
+            new_measure = gp.models.Measure(track=track, header=header)
+            song.tracks[0].measures.append(new_measure)
+            voice = new_measure.voices[0]  # reset to new measure's voice
+            tot_duration = 0
+            k_val = 0
+            l_val = 0
+            beat_collect = []
+            note_collect = []
+        
+
     print(string_collect)
     print(fret_collect)
     print(kval_collect)
