@@ -1,12 +1,8 @@
 import requests
 from tqdm import tqdm
 import zipfile
-import io
-import os
 from midihelper import midi_extract
-from guitarhelper import findnewstring, find_string_and_fret
 from guitarprohelper import makegpro, writegpro
-import guitarpro as gp
 
 def datasetdownload():
     # URL of the dataset
@@ -37,9 +33,10 @@ def datasetdownload():
     print("Done! Dataset is in the 'maestro_dataset' folder.")
 
 # Usage
-duration_note, start_tick, notevalue = midi_extract("./MIDI-Unprocessed_SMF_02_R1_2004_01-05_ORIG_MID--AUDIO_02_R1_2004_05_Track05_wav.midi")
-
-song = makegpro(duration_note, start_tick, notevalue, 55)
-writegpro('output', song)
 # datasetdownload()
+filename = "./MIDI-Unprocessed_SMF_02_R1_2004_01-05_ORIG_MID--AUDIO_02_R1_2004_05_Track05_wav.midi"
+duration_note, start_tick, notevalue = midi_extract(filename, 3)
+song = makegpro(duration_note, start_tick, notevalue, [64, 59, 55, 50, 45, 40], 55)
+writegpro('output', song)
+
 

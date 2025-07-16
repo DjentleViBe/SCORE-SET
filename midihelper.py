@@ -31,7 +31,7 @@ def ticks_to_duration(ticks, tpq):
     else:
         return 1           # whole note
 
-def midi_extract(midi_path):
+def midi_extract(midi_path, total_measure):
     mid = mido.MidiFile(midi_path)
     duration_note = []
     start_tick = []
@@ -58,7 +58,7 @@ def midi_extract(midi_path):
                     start_tick.append(start)
                     duration_note.append(dur_value)
                         # break
-            if tot_measure >= 2:
+            if tot_measure >= total_measure:
                 break
             #if len(notevalue) >= 8 and len(notevalue) == len(duration_note):
             #    break
@@ -76,11 +76,11 @@ def midi_extract(midi_path):
     notevalue = list(notevalue)
     duration_note = list(duration_note)
 
-    print("Duration", duration_note)
-    print("start",start_tick)
-    print("note",notevalue)
+    # print("Duration", duration_note)
+    # print("start",start_tick)
+    # print("note",notevalue)
     notevaluenanme = []
     for nv in notevalue:
         notevaluenanme.append(midi_to_note_label(nv))
-    print("note",notevaluenanme)
+    # print("note",notevaluenanme)
     return duration_note, start_tick, notevalue

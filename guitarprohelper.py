@@ -1,5 +1,6 @@
 import guitarpro as gp
 from guitarhelper import find_string_and_fret, findnewstring
+
 def clip_to_nearest_duration(ticks, ticks_per_beat):
     # Precompute standard durations in ticks
     duration_map = {
@@ -39,7 +40,7 @@ def insert_rest_beat(start_tick, ticks_per_beat, voice):
     return voice, 1 / duration_val
 
 
-def makegpro(duration, start, noteval, tolerence):
+def makegpro(duration, start, noteval, string_tuning, tolerence):
     song = gp.models.Song()
     song.artist = "DjentleViBe"
     song.tempo = 120  # Set the tempo
@@ -58,7 +59,6 @@ def makegpro(duration, start, noteval, tolerence):
     kval_collect = []
     l_val = 0
     k_val = 0
-    string_tuning=[64, 59, 55, 50, 45, 40]
     reuse_last_beat = False
 
     # voice, tot_duration = insert_rest_beat(start[0], 480, voice)
@@ -120,9 +120,9 @@ def makegpro(duration, start, noteval, tolerence):
             note_collect = []
         
 
-    print(string_collect)
-    print(fret_collect)
-    print(kval_collect)
+    #print(string_collect)
+    #print(fret_collect)
+    #print(kval_collect)
     return song
 
 def writegpro(filename, song):
