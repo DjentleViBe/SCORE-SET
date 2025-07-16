@@ -3,6 +3,8 @@ from tqdm import tqdm
 import zipfile
 import io
 import os
+from midihelper import midi_to_note_label
+from guitarhelper import findnewstring, find_string_and_fret
 
 def datasetdownload():
     # URL of the dataset
@@ -67,33 +69,9 @@ def ticks_to_duration(ticks, tpq):
     else:
         return 1           # whole note
 
-def find_string_and_fret(note_number, string_tuning, max_fret=24):
-    for string_index, tuning_note in enumerate(string_tuning):
-        fret = note_number - tuning_note
-        if 0 <= fret <= max_fret:
-            # Return string number (1-based: 1 = high E)
-            return (string_index + 1, fret)
-    return None  # Note can't be played on any string
 
-
-def midi_to_gp5(midi_path, gp5_path, string_tuning=[64, 59, 55, 50, 45, 40]):
+def midi_to_gp5(midi_path):
     mid = mido.MidiFile(midi_path)
-    song = gp.models.Song()
-    song.tracks[0].name = "Guitar"
-    song.tracks[0].channel.instrument = 30
-    song.tracks[0].strings[0].value = string_tuning[0]
-    song.tracks[0].strings[1].value = string_tuning[1]
-    song.tracks[0].strings[2].value = string_tuning[2]
-    song.tracks[0].strings[3].value = string_tuning[3]
-    song.tracks[0].strings[4].value = string_tuning[4]
-    song.tracks[0].strings[5].value = string_tuning[5]
-
-    song.tracks[0].measures[0].hasTimeSignature  =True
-    song.tracks[0].measures[0].timeSignature.denominator.value = 4
-    voice = song.tracks[0].measures[0].voices[0]
-    note_collect = []
-    l_val = 0
-
     duration_note = []
     start_tick = []
     notevalue = []
@@ -103,69 +81,116 @@ def midi_to_gp5(midi_path, gp5_path, string_tuning=[64, 59, 55, 50, 45, 40]):
     tot_measure = 0
     for track in mid.tracks:
         for msg in track:
-            if tot_measure > 1:
-                break
             current_tick += msg.time
             #print(msg.time)
 
             if msg.type == 'note_on' and msg.velocity > 0:
                 note_starts[msg.note] = current_tick
-                start_tick.append(current_tick)
 
             elif (msg.type == 'note_off') or (msg.type == 'note_on' and msg.velocity == 0):
                 if msg.note in note_starts:
-                        
-                        midi_note = msg.note
-                        start = note_starts.pop(msg.note)
-                        duration = current_tick - start
-                        dur_value = clip_to_nearest_duration(duration, mid.ticks_per_beat)
-                        duration_note.append(dur_value)
-                        notevalue.append(msg.note)
-                        tot_measure += 1 / dur_value
-                        # Basic fret/string assignment (e.g., all on 1st string)
-                       
-                        string_number, fret = find_string_and_fret(msg.note, string_tuning, 23)
-                        if fret < 0 or fret > 24:
-                            continue  # skip unplayable notes
-
-                        current_beat = gp.Beat(voice=voice)
-                        current_beat.status = gp.models.BeatStatus.normal
-                        voice.beats.append(current_beat)
-                        note_collect.append(gp.Note(beat=current_beat))
-                        note_collect[l_val].type = gp.models.NoteType.normal
-                        note_collect[l_val].value = fret
-                        note_collect[l_val].string = string_number
-                        note_collect[l_val].beat.duration.value = dur_value
-                        current_beat.notes.append(note_collect[l_val])
-                        
-                        l_val += 1
-                        print(tot_measure)
-                        
+                    start = note_starts.pop(msg.note)
+                    duration = current_tick - start
+                    dur_value = clip_to_nearest_duration(duration, mid.ticks_per_beat)
+                    
+                    notevalue.append(msg.note)
+                    start_tick.append(start)
+                    duration_note.append(dur_value)
                         # break
+            if len(notevalue) >= 8 and len(notevalue) == len(duration_note):
+                break
+    # Combine all into tuples
+    combined = list(zip(start_tick, notevalue, duration_note))
 
-    gp.write(song, gp5_path)
-    print(f"Guitar Pro file saved to {gp5_path}")
+    # Sort by start_tick (the first element of each tuple)
+    combined.sort(key=lambda x: x[0])
+
+    # Unzip back to separate lists
+    start_tick, notevalue, duration_note = zip(*combined)
+
+    # Convert back to lists (zip returns tuples)
+    start_tick = list(start_tick)
+    notevalue = list(notevalue)
+    duration_note = list(duration_note)
+
     print("Duration", duration_note)
     print("start",start_tick)
     print("note",notevalue)
+    notevaluenanme = []
+    for nv in notevalue:
+        notevaluenanme.append(midi_to_note_label(nv))
+    print("note",notevaluenanme)
     return duration_note, start_tick, notevalue
 
 # Usage
-duration_note, start_tick, notevalue = midi_to_gp5("./MIDI-Unprocessed_SMF_02_R1_2004_01-05_ORIG_MID--AUDIO_02_R1_2004_05_Track05_wav.midi", "output.gp5")
+duration_note, start_tick, notevalue = midi_to_gp5("./MIDI-Unprocessed_SMF_02_R1_2004_01-05_ORIG_MID--AUDIO_02_R1_2004_05_Track05_wav.midi")
 
 def makegpro(duration, start, noteval, tolerence):
+    song = gp.models.Song()
+    song.artist = "DjentleViBe"
+    song.tempo = 120  # Set the tempo
+    song.tracks[0].name = "Guitar"
+    song.tracks[0].channel.instrument = 30
+
+    song.tracks[0].measures[0].hasTimeSignature  = True 
+    song.tracks[0].measures[0].timeSignature.denominator.value = 4
+    voice = song.tracks[0].measures[0].voices[0]
     note_collect = []
+    beat_collect = []
+    string_collect = []
+    fret_collect = []
+    kval_collect = []
     l_val = 0
+    k_val =0
+    string_tuning=[64, 59, 55, 50, 45, 40]
+    reuse_last_beat = False
     for n_val, note in enumerate(noteval):
         if n_val != 0:
             if start[n_val] - start [n_val - 1] <= tolerence:
-                print("barred",start[n_val],start[n_val-1] )
+                # print("barred",start[n_val],start[n_val-1])
+                reuse_last_beat = True
+        
+        if reuse_last_beat:
+            current_beat = beat_collect[k_val - 1]
+            if duration[n_val] < beat_collect[k_val - 1].duration.value:
+                beat_collect[k_val - 1].duration.value = duration[n_val]
+            current_beat.status = gp.models.BeatStatus.normal
+            reuse_last_beat = False
+            string_number, fret = find_string_and_fret(note, string_tuning, 23)
+            if string_number == string_collect[l_val -1]:
+                fret, string_number = findnewstring(note, string_number, string_tuning)
+            kval_collect.append(k_val - 1)
         else:
-            print(note)
-    return 0
+            string_number, fret = find_string_and_fret(note, string_tuning, 23)
+            current_beat = gp.Beat(voice=voice)
+            current_beat.status = gp.models.BeatStatus.normal
+            beat_collect.append(current_beat)
+            voice.beats.append(current_beat)
+            kval_collect.append(k_val)
+            k_val += 1
+    
+        string_collect.append(string_number)
+        fret_collect.append(fret)
+        note_collect.append(gp.Note(beat=current_beat))
+        note_collect[l_val].type = gp.models.NoteType.normal
+        note_collect[l_val].value = fret
+        note_collect[l_val].string = string_number
+        note_collect[l_val].beat.duration.value = duration[n_val]
+        current_beat.notes.append(note_collect[l_val])
+                        
+        l_val += 1
+    print(string_collect)
+    print(fret_collect)
+    print(kval_collect)
+    return song
 
-makegpro(duration_note, start_tick, notevalue, 55)
+def writegpro(filename, song):
+    """write gpro file to disk"""
+    # Save the song to a Guitar Pro file
+    with open(filename + ".gp5", 'wb') as file:
+        gp.write(song, file)
 
-
+song = makegpro(duration_note, start_tick, notevalue, 55)
+writegpro('output', song)
 # datasetdownload()
 
