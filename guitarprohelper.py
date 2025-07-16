@@ -1,5 +1,6 @@
 import guitarpro as gp
 from guitarhelper import find_string_and_fret, find_closest_string_and_fret
+from fractions import Fraction
 
 def clip_to_nearest_duration(ticks, ticks_per_beat):
     # Precompute standard durations in ticks
@@ -94,7 +95,7 @@ def makegpro(duration, start, noteval, string_tuning, tolerence):
     l_val = 0
     k_val = 0
     reuse_last_beat = False
-
+    measure_count = 0
     # voice, tot_duration = insert_rest_beat(start[0], 480, voice)
     for n_val, note in enumerate(noteval):
         if k_val != 0:
@@ -143,6 +144,10 @@ def makegpro(duration, start, noteval, string_tuning, tolerence):
         l_val += 1
 
         if tot_duration >= 1:
+            print(tot_duration)
+            ratio = Fraction(tot_duration).limit_denominator()
+            song.tracks[0].measures[measure_count].timeSignature.numerator = ratio.numerator
+            song.tracks[0].measures[measure_count].timeSignature.denominator.value = ratio.denominator
             track = song.tracks[0]
             header = gp.models.MeasureHeader(number=len(track.measures))
             # Append the header to the song
@@ -156,6 +161,7 @@ def makegpro(duration, start, noteval, string_tuning, tolerence):
             l_val = 0
             beat_collect = []
             note_collect = []
+            measure_count += 1
         
 
     #print(string_collect)
