@@ -52,7 +52,7 @@ def midi_extract(midi_path, total_measure):
                 if msg.note in note_starts:
                     start = note_starts.pop(msg.note)
                     duration = current_tick - start
-                    dur_value = clip_to_nearest_duration(duration, mid.ticks_per_beat)
+                    dur_value = max(16, clip_to_nearest_duration(duration, mid.ticks_per_beat))
                     tot_measure += 1 / dur_value
                     notevalue.append(msg.note)
                     start_tick.append(start)
@@ -76,11 +76,11 @@ def midi_extract(midi_path, total_measure):
     notevalue = list(notevalue)
     duration_note = list(duration_note)
 
-    # print("Duration", duration_note)
+    print("Duration", duration_note)
     # print("start",start_tick)
-    # print("note",notevalue)
+    print("note",notevalue)
     notevaluenanme = []
     for nv in notevalue:
         notevaluenanme.append(midi_to_note_label(nv))
-    # print("note",notevaluenanme)
+    print("note",notevaluenanme)
     return duration_note, start_tick, notevalue

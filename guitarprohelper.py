@@ -16,6 +16,28 @@ def clip_to_nearest_duration(ticks, ticks_per_beat):
     closest_ticks = min(duration_map.keys(), key=lambda x: abs(x - ticks))
     return duration_map[closest_ticks]
 
+
+def decompose_duration(duration_beats):
+    """
+    Decomposes a float duration in beats into standard note values.
+    Returns a list of durations that sum to the original value.
+    Example: 2.25 -> [2, 0.25]
+    """
+    note_values = [4, 2, 1, 0.5, 0.25, 0.125, 0.0625]
+    result = []
+    remaining = duration_beats
+
+    for val in note_values:
+        while remaining >= val - 1e-4:  # Small epsilon for floating point tolerance
+            result.append(val)
+            remaining -= val
+            if abs(remaining) < 1e-4:
+                return result
+
+    if remaining > 0:
+        print(f"Warning: Unmatched remaining duration: {remaining}")
+    return result
+
 def insert_rest_beat(start_tick, ticks_per_beat, voice):
     """
     Inserts a rest at the beginning if the first note is delayed.
@@ -25,17 +47,29 @@ def insert_rest_beat(start_tick, ticks_per_beat, voice):
         ticks_per_beat (int): MIDI resolution.
         voice (gp.Voice): Voice to insert the rest into.
     """
+    mapping = {
+        4.0: gp.models.Duration.whole,
+        2.0: gp.models.Duration.half,
+        1.0: gp.models.Duration.quarter,
+        0.5: gp.models.Duration.eighth,
+        0.25: gp.models.Duration.sixteenth,
+        0.125: gp.models.Duration.thirtySecond,
+        0.0625: gp.models.Duration.sixtyFourth,
+    }
     if start_tick <= 0:
         return  # No rest needed
 
-    duration_ticks = start_tick
-    duration_val = clip_to_nearest_duration(duration_ticks, ticks_per_beat)
-
+    duration_val =0
     rest_beat = gp.Beat(voice=voice)
     rest_beat.status = gp.models.BeatStatus.rest
-    rest_beat.duration.value = duration_val
-
-    voice.beats.append(rest_beat)
+    # duration_val = clip_to_nearest_duration(duration_ticks, ticks_per_beat)
+    rest_durations = decompose_duration(start_tick / ticks_per_beat)
+    for rt in rest_durations:
+        rest_beat = gp.Beat(voice=voice)
+        rest_beat.status = gp.models.BeatStatus.rest
+        rest_beat.duration.value = mapping.get(rt, None)
+        voice.beats.append(rest_beat)
+        duration_val+= rt
 
     return voice, 1 / duration_val
 
@@ -61,7 +95,7 @@ def makegpro(duration, start, noteval, string_tuning, tolerence):
     k_val = 0
     reuse_last_beat = False
 
-    # voice, tot_duration = insert_rest_beat(start[0], 480, voice)
+    voice, tot_duration = insert_rest_beat(start[0], 480, voice)
     for n_val, note in enumerate(noteval):
         if k_val != 0:
             if start[n_val] - start [n_val - 1] <= tolerence:
@@ -70,8 +104,8 @@ def makegpro(duration, start, noteval, string_tuning, tolerence):
 
         if reuse_last_beat:
             current_beat = beat_collect[k_val - 1]
-            if duration[n_val] < beat_collect[k_val - 1].duration.value:
-                beat_collect[k_val - 1].duration.value = duration[n_val]
+            duration[n_val] = min(max(beat_collect[k_val - 1].duration.value, duration[n_val]), 16)
+            beat_collect[k_val - 1].duration.value = duration[n_val]
             current_beat.status = gp.models.BeatStatus.normal
             reuse_last_beat = False
             string_number, fret = find_string_and_fret(note, string_tuning, 23)
