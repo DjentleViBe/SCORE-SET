@@ -1,5 +1,5 @@
 import guitarpro as gp
-from guitarhelper import find_string_and_fret, findnewstring
+from guitarhelper import find_string_and_fret, find_closest_string_and_fret
 
 def clip_to_nearest_duration(ticks, ticks_per_beat):
     # Precompute standard durations in ticks
@@ -77,9 +77,13 @@ def makegpro(duration, start, noteval, string_tuning, tolerence):
             string_number, fret = find_string_and_fret(note, string_tuning, 23)
             used_strings = {n.string for n in current_beat.notes}
             if string_number in used_strings:
-                fret, string_number = findnewstring(note, string_number, string_tuning)
-                if string_number not in used_strings and 0 <= fret <= 24:
-                    string_number, fret = string_number, fret
+                for shift in [-12, -24, 12]:  # Try down 1 octave, 2 octaves, then up 1 octave
+                    shifted_note = note + shift
+                    fret, alt_string = find_closest_string_and_fret(shifted_note, used_strings, string_tuning)
+                    if fret is not None:
+                        note = shifted_note
+                        string_number = alt_string
+                        break
                 else:
                     print(f"Warning: Skipping note {note} at tick {start[n_val]} due to string conflict.")
                     continue
