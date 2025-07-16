@@ -144,7 +144,7 @@ def makegpro(duration, start, noteval, string_tuning, tolerence):
         l_val += 1
 
         if tot_duration >= 1:
-            print(tot_duration)
+            # print(tot_duration)
             ratio = Fraction(tot_duration).limit_denominator()
             song.tracks[0].measures[measure_count].timeSignature.numerator = ratio.numerator
             song.tracks[0].measures[measure_count].timeSignature.denominator.value = ratio.denominator
