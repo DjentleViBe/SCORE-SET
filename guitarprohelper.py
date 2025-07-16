@@ -95,7 +95,7 @@ def makegpro(duration, start, noteval, string_tuning, tolerence):
     k_val = 0
     reuse_last_beat = False
 
-    voice, tot_duration = insert_rest_beat(start[0], 480, voice)
+    # voice, tot_duration = insert_rest_beat(start[0], 480, voice)
     for n_val, note in enumerate(noteval):
         if k_val != 0:
             if start[n_val] - start [n_val - 1] <= tolerence:
@@ -139,7 +139,7 @@ def makegpro(duration, start, noteval, string_tuning, tolerence):
         note_collect[l_val].string = string_number
         note_collect[l_val].beat.duration.value = duration[n_val]
         current_beat.notes.append(note_collect[l_val])
-        tot_duration += 1 / duration[n_val]
+        tot_duration = sum(1 / beat.duration.value for beat in beat_collect)
         l_val += 1
 
         if tot_duration >= 1:
