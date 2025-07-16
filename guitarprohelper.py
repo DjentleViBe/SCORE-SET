@@ -104,7 +104,7 @@ def makegpro(duration, start, noteval, string_tuning, tolerence):
 
         if reuse_last_beat:
             current_beat = beat_collect[k_val - 1]
-            duration[n_val] = min(max(beat_collect[k_val - 1].duration.value, duration[n_val]), 16)
+            duration[n_val] = max(beat_collect[k_val - 1].duration.value, duration[n_val])
             beat_collect[k_val - 1].duration.value = duration[n_val]
             current_beat.status = gp.models.BeatStatus.normal
             reuse_last_beat = False
