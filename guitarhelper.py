@@ -12,9 +12,13 @@ def findnewstring(note, string, TUNING):
     return fret, closest_index + 1
 
 def find_string_and_fret(note_number, string_tuning, max_fret=24):
+    if note_number <= string_tuning[5]:
+        note_number += 12
     for string_index, tuning_note in enumerate(string_tuning):
         fret = note_number - tuning_note
         if 0 <= fret <= max_fret:
+            if fret >= 12:
+                fret -= 12
             # Return string number (1-based: 1 = high E)
             return (string_index + 1, fret)
     return None  # Note can't be played on any string
@@ -27,5 +31,7 @@ def find_closest_string_and_fret(note, used_strings, TUNING, max_fret=24):
             continue
         fret = note - tuning_note
         if 0 <= fret <= max_fret:
-            candidates.append((fret, string_num))
+             if fret >= 12:
+                fret -= 12
+                candidates.append((fret, string_num))
     return min(candidates, default=(None, None), key=lambda x: x[0])

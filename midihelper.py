@@ -58,8 +58,9 @@ def midi_extract(midi_path, total_measure):
                     start_tick.append(start)
                     duration_note.append(dur_value)
                         # break
-            if tot_measure >= total_measure:
-                break
+            if total_measure != 0:
+                if tot_measure >= total_measure:
+                    break
             #if len(notevalue) >= 8 and len(notevalue) == len(duration_note):
             #    break
     # Combine all into tuples
