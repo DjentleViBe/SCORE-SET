@@ -49,16 +49,16 @@ VALUES = [2477,
 250,
 3013]
 
-total = sum(VALUES)
-print(total)
+def create_accents():
+    total = sum(VALUES)
 
-ratios = [v / total for v in VALUES]
+    ratios = [v / total for v in VALUES]
 
-plt.figure(figsize=(6,4))
-plt.title('Accent occurences')
-plt.bar(LABELS, ratios, color = 'k')
-plt.ylabel('Count ratio')
-#plt.tight_layout()
-plt.xticks(rotation = 90, ha = 'right', fontsize = 7)
-plt.subplots_adjust(bottom=0.25)
-plt.savefig(current_dir + '/accent_probability.pdf', dpi = 200)
+    plt.figure(figsize=(6,4))
+    plt.title('Accent occurences')
+    plt.bar(LABELS, ratios, color = 'k')
+    plt.ylabel('Count ratio')
+    #plt.tight_layout()
+    plt.xticks(rotation = 90, ha = 'right', fontsize = 7)
+    plt.subplots_adjust(bottom=0.25)
+    plt.savefig(current_dir + '/_paper/accent_probability.pdf', dpi = 200)
