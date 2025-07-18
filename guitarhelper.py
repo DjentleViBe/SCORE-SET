@@ -1,3 +1,5 @@
+import math
+
 def findnewstring(note, string, TUNING):
     # notepos = TUNING[string - 1] + note
     notepos = note
@@ -13,7 +15,9 @@ def findnewstring(note, string, TUNING):
 
 def find_string_and_fret(note_number, string_tuning, max_fret=24):
     if note_number <= string_tuning[5]:
-        note_number += 12
+        note_number += 12 * math.ceil(((string_tuning[5] - note_number) / 12))
+    elif note_number >= string_tuning[0] + 24:
+        note_number -= 12 * math.ceil(((note_number - string_tuning[0]) / 12))
     for string_index, tuning_note in enumerate(string_tuning):
         fret = note_number - tuning_note
         if 0 <= fret <= max_fret:
