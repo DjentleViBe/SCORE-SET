@@ -4,6 +4,7 @@ import zipfile
 from midihelper import midi_extract
 from guitarprohelper import makegpro, writegpro
 from expressions import insertexpressions
+from techniques import create_accents
 
 def datasetdownload():
     # URL of the dataset
@@ -35,6 +36,7 @@ def datasetdownload():
 
 # Usage
 # datasetdownload()
+create_accents()
 filename = "./MIDI-Unprocessed_SMF_02_R1_2004_01-05_ORIG_MID--AUDIO_02_R1_2004_05_Track05_wav.midi"
 duration_note, start_tick, notevalue = midi_extract(filename, 0)
 song = makegpro(duration_note, start_tick, notevalue, [64, 59, 55, 50, 45, 40], 55)

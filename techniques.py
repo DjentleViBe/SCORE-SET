@@ -15,13 +15,13 @@ LABELS = ['BEND_NOTE_1',
 'TREM_BAR_3',
 'TREM_BAR_4',
 'TREM_BAR_5',
-'DEAD_NOTE',
 'SLIDE_NOTE_1',
 'SLIDE_NOTE_2',
 'SLIDE_NOTE_3',
 'SLIDE_NOTE_4',
 'SLIDE_NOTE_5',
 'SLIDE_NOTE_6',
+'DEAD_NOTE',
 'HAMMER',
 'VIBRATO',
 'HARMONIC']
@@ -38,7 +38,6 @@ VALUES = [2477,
 1005,
 678,
 1900,
-2253,
 6165,
 2304,
 62,
@@ -47,7 +46,8 @@ VALUES = [2477,
 680,
 2140,
 250,
-3013]
+3013,
+2253]
 
 def create_accents():
     total = sum(VALUES)

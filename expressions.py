@@ -48,6 +48,30 @@ def harmonic(song, beat_in_measure, indices_to_increment):
         song.tracks[0].measures[measure].voices[0].beats[beat_index].notes[0].harmonic = harmonic_1_beat.notes[0].effect.harmonic
     return song
 
+def vibrato(song, beat_in_measure, indices_to_increment):
+    song_vibrato = gp.parse('./gprofiles/gp5_templates/vibrato.gp5')
+    vibrato_beat = song_vibrato.tracks[0].measures[0].voices[0].beats[0]
+    for iti in indices_to_increment:
+        measure, beat_index = find_insert_index(beat_in_measure, iti)
+        song.tracks[0].measures[measure].voices[0].beats[beat_index].notes[0].vibrato = vibrato_beat.notes[0].effect.vibrato
+    return song
+
+def hammer(song, beat_in_measure, indices_to_increment):
+    song_hammer = gp.parse('./gprofiles/gp5_templates/hammer.gp5')
+    hammer_beat = song_hammer.tracks[0].measures[0].voices[0].beats[0]
+    for iti in indices_to_increment:
+        measure, beat_index = find_insert_index(beat_in_measure, iti)
+        song.tracks[0].measures[measure].voices[0].beats[beat_index].notes[0].hammer = hammer_beat.notes[0].effect.hammer
+    return song
+
+def dead(song, beat_in_measure, indices_to_increment):
+    song_dead = gp.parse('./gprofiles/gp5_templates/dead.gp5')
+    dead_beat = song_dead.tracks[0].measures[0].voices[0].beats[0]
+    for iti in indices_to_increment:
+        measure, beat_index = find_insert_index(beat_in_measure, iti)
+        song.tracks[0].measures[measure].voices[0].beats[beat_index].notes[0].type = dead_beat.notes[0].type
+    return song
+
 def insertexpressions(song):
     # calculate the total number of beats in the song
     total_beats = 0
@@ -69,39 +93,41 @@ def insertexpressions(song):
 
     # Step 2: Split these indices into groups based on the percentages
     split_counts = [int(EXPR_COUNT * p) for p in ratios ]
-
-    # Fix rounding errors to ensure total adds up to EXPR_COUNT
-    while sum(split_counts) < EXPR_COUNT:
-        for i in range(len(split_counts)):
-            split_counts[i] += 1
-            if sum(split_counts) == EXPR_COUNT:
-                break
+    print(split_counts)
 
     # Step 3: Assign indices to groups
-    random.shuffle(indices_to_increment)
     grouped_indices = []
     start = 0
     for count in split_counts:
-        grouped_indices.append(indices_to_increment[start:start + count])
+        grouped_indices.append(indices_to_increment[start : start + count])
         start += count
 
     print("total beats : ", total_beats)
     print("insert beats : ", EXPR_COUNT)
-
+    print(len(grouped_indices))
     for i in range(1, 8):
-        print("bend_note_" + str(i) + " :", len(grouped_indices[i]))
-        song = bend_note(song, beat_in_measure, grouped_indices[i],"./gprofiles/gp5_templates/bend_" + str(i) + ".gp5")
+        print("bend_note_" + str(i) + " :", len(grouped_indices[i - 1]))
+        song = bend_note(song, beat_in_measure, grouped_indices[i - 1],"./gprofiles/gp5_templates/bend_" + str(i) + ".gp5")
 
     for j in range(1, 6):
-        print("trem_bar_" + str(j) + " :", len(grouped_indices[j + i]))
-        song = trem_note(song, beat_in_measure, grouped_indices[j + i],"./gprofiles/gp5_templates/trem_" + str(j) + ".gp5")
+        print("trem_bar_" + str(j) + " :", len(grouped_indices[j + i - 1]))
+        song = trem_note(song, beat_in_measure, grouped_indices[j + i - 1],"./gprofiles/gp5_templates/trem_" + str(j) + ".gp5")
 
     for k in range(1, 7):
-        print("slide_note_" + str(k) + " :", len(grouped_indices[i + j + k]))
-        song = slide_note(song, beat_in_measure, grouped_indices[i + j + k],"./gprofiles/gp5_templates/slide_" + str(k) + ".gp5")
+        print("slide_note_" + str(k) + " :", len(grouped_indices[i - 1 + j + k]))
+        song = slide_note(song, beat_in_measure, grouped_indices[i - 1 + j + k],"./gprofiles/gp5_templates/slide_" + str(k) + ".gp5")
 
     print("harmonic :", len(grouped_indices[21]))
     song = harmonic(song, beat_in_measure, grouped_indices[21])
+
+    print("vibrato :", len(grouped_indices[20]))
+    song = vibrato(song, beat_in_measure, grouped_indices[20])
+
+    print("hammer :", len(grouped_indices[19]))
+    song = hammer(song, beat_in_measure, grouped_indices[19])
+
+    print("dead :", len(grouped_indices[18]))
+    song = dead(song, beat_in_measure, grouped_indices[18])
 
 
     return song
