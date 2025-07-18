@@ -35,8 +35,8 @@ def decompose_duration(duration_beats):
             if abs(remaining) < 1e-4:
                 return result
 
-    if remaining > 0:
-        print(f"Warning: Unmatched remaining duration: {remaining}")
+    # if remaining > 0:
+    #    print(f"Warning: Unmatched remaining duration: {remaining}")
     return result
 
 def insert_rest_beat(start_tick, ticks_per_beat, voice):
@@ -120,10 +120,10 @@ def makegpro(duration, start, noteval, string_tuning, tolerence):
                         string_number = alt_string
                         break
                 else:
-                    print(f"Warning: Skipping note {note} at tick {start[n_val]} due to string conflict.")
+                    # print(f"Warning: Skipping note {note} at tick {start[n_val]} due to string conflict.")
                     continue
             kval_collect.append(k_val - 1)
-        else:
+        else:  
             string_number, fret = find_string_and_fret(note, string_tuning, 23)
             current_beat = gp.Beat(voice=voice)
             current_beat.status = gp.models.BeatStatus.normal
