@@ -8,7 +8,7 @@ def find_insert_index(arr, value):
     If value is smaller than the first element, returns -1.
     If value is larger than the last element, returns len(arr) - 1.
     """
-    for i in range(len(arr) - 1):
+    for i in range(len(arr)):
         if value < arr[i]:
             prev = arr[i - 1] if i > 0 else 0
             return i, int(value - prev)
@@ -93,7 +93,6 @@ def insertexpressions(song):
 
     # Step 2: Split these indices into groups based on the percentages
     split_counts = [int(EXPR_COUNT * p) for p in ratios ]
-    print(split_counts)
 
     # Step 3: Assign indices to groups
     grouped_indices = []
@@ -104,30 +103,28 @@ def insertexpressions(song):
 
     print("total beats : ", total_beats)
     print("insert beats : ", EXPR_COUNT)
-    print(len(grouped_indices))
     for i in range(1, 8):
-        print("bend_note_" + str(i) + " :", len(grouped_indices[i - 1]))
+        # print("bend_note_" + str(i) + " :", len(grouped_indices[i - 1]))
         song = bend_note(song, beat_in_measure, grouped_indices[i - 1],"./gprofiles/gp5_templates/bend_" + str(i) + ".gp5")
 
     for j in range(1, 6):
-        print("trem_bar_" + str(j) + " :", len(grouped_indices[j + i - 1]))
+        # print("trem_bar_" + str(j) + " :", len(grouped_indices[j + i - 1]))
         song = trem_note(song, beat_in_measure, grouped_indices[j + i - 1],"./gprofiles/gp5_templates/trem_" + str(j) + ".gp5")
 
     for k in range(1, 7):
-        print("slide_note_" + str(k) + " :", len(grouped_indices[i - 1 + j + k]))
+        # print("slide_note_" + str(k) + " :", len(grouped_indices[i - 1 + j + k]))
         song = slide_note(song, beat_in_measure, grouped_indices[i - 1 + j + k],"./gprofiles/gp5_templates/slide_" + str(k) + ".gp5")
 
-    print("harmonic :", len(grouped_indices[21]))
+    # print("harmonic :", len(grouped_indices[21]))
     song = harmonic(song, beat_in_measure, grouped_indices[21])
 
-    print("vibrato :", len(grouped_indices[20]))
+    # print("vibrato :", len(grouped_indices[20]))
     song = vibrato(song, beat_in_measure, grouped_indices[20])
 
-    print("hammer :", len(grouped_indices[19]))
+    #  print("hammer :", len(grouped_indices[19]))
     song = hammer(song, beat_in_measure, grouped_indices[19])
 
-    print("dead :", len(grouped_indices[18]))
+    # print("dead :", len(grouped_indices[18]))
     song = dead(song, beat_in_measure, grouped_indices[18])
-
 
     return song
