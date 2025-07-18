@@ -4,6 +4,14 @@ from tqdm import tqdm
 import os
 import shutil
 
+def zip_directory(folder_path, zip_name):
+    with zipfile.ZipFile(zip_name, 'w', zipfile.ZIP_DEFLATED) as zipf:
+        for root, dirs, files in os.walk(folder_path):
+            for file in files:
+                abs_path = os.path.join(root, file)
+                rel_path = os.path.relpath(abs_path, folder_path)
+                zipf.write(abs_path, rel_path)
+
 def create_or_clear_directory(path):
     if os.path.exists(path):
         # Clear directory
