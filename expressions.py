@@ -14,13 +14,13 @@ def find_insert_index(arr, value):
             return i, int(value - prev)
     return -1  # Not in between any two values
 
-def bend_note_1(song, beat_in_measure, indices_to_increment):
-    song_bend_1 = gp.parse('./gprofiles/gp5_templates/bend_1.gp5')
-    bend1_beat = song_bend_1.tracks[0].measures[0].voices[0].beats[0]
+def bend_note(song, beat_in_measure, indices_to_increment, filename):
+    song_bend = gp.parse(filename)
+    bend_beat = song_bend.tracks[0].measures[0].voices[0].beats[0]
     for iti in indices_to_increment:
         measure, beat_index = find_insert_index(beat_in_measure, iti)
         song.tracks[0].measures[measure].voices[0].beats[beat_index].effect.isBend = True
-        song.tracks[0].measures[measure].voices[0].beats[beat_index].notes[0].effect.bend = bend1_beat.notes[0].effect.bend
+        song.tracks[0].measures[measure].voices[0].beats[beat_index].notes[0].effect.bend = bend_beat.notes[0].effect.bend
     return song
 
 def harmonic(song, beat_in_measure, indices_to_increment):
@@ -73,10 +73,12 @@ def insertexpressions(song):
     print("total beats : ", total_beats)
     print("insert beats : ", EXPR_COUNT)
 
-    print("bend_note_1 :", len(grouped_indices[0]))
-    song = bend_note_1(song, beat_in_measure, grouped_indices[0])
+    for i in range(1, 8):
+        print("bend_note_" + str(i) + " :", len(grouped_indices[i]))
+        song = bend_note(song, beat_in_measure, grouped_indices[i],"./gprofiles/gp5_templates/bend_" + str(i) + ".gp5")
 
     print("harmonic :", len(grouped_indices[21]))
     song = harmonic(song, beat_in_measure, grouped_indices[21])
+
 
     return song
