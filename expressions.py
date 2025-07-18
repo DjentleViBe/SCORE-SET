@@ -41,11 +41,12 @@ def slide_note(song, beat_in_measure, indices_to_increment, filename):
     return song
 
 def harmonic(song, beat_in_measure, indices_to_increment):
-    song_harmonic_1 = gp.parse('./gprofiles/gp5_templates/harmonic.gp5')
+    song_harmonic_1 = gp.parse('./gprofiles/gp5_templates/harmonic_1.gp5')
     harmonic_1_beat = song_harmonic_1.tracks[0].measures[0].voices[0].beats[0]
     for iti in indices_to_increment:
         measure, beat_index = find_insert_index(beat_in_measure, iti)
-        song.tracks[0].measures[measure].voices[0].beats[beat_index].notes[0].harmonic = harmonic_1_beat.notes[0].effect.harmonic
+        note = song.tracks[0].measures[measure].voices[0].beats[beat_index].notes[0]
+        note.effect.harmonic = harmonic_1_beat.notes[0].effect.harmonic
     return song
 
 def vibrato(song, beat_in_measure, indices_to_increment):
@@ -53,7 +54,8 @@ def vibrato(song, beat_in_measure, indices_to_increment):
     vibrato_beat = song_vibrato.tracks[0].measures[0].voices[0].beats[0]
     for iti in indices_to_increment:
         measure, beat_index = find_insert_index(beat_in_measure, iti)
-        song.tracks[0].measures[measure].voices[0].beats[beat_index].notes[0].vibrato = vibrato_beat.notes[0].effect.vibrato
+        note = song.tracks[0].measures[measure].voices[0].beats[beat_index].notes[0]
+        note.effect.vibrato = vibrato_beat.notes[0].effect.vibrato
     return song
 
 def hammer(song, beat_in_measure, indices_to_increment):
@@ -61,7 +63,8 @@ def hammer(song, beat_in_measure, indices_to_increment):
     hammer_beat = song_hammer.tracks[0].measures[0].voices[0].beats[0]
     for iti in indices_to_increment:
         measure, beat_index = find_insert_index(beat_in_measure, iti)
-        song.tracks[0].measures[measure].voices[0].beats[beat_index].notes[0].hammer = hammer_beat.notes[0].effect.hammer
+        note = song.tracks[0].measures[measure].voices[0].beats[beat_index].notes[0]
+        note.effect.hammer = hammer_beat.notes[0].effect.hammer
     return song
 
 def dead(song, beat_in_measure, indices_to_increment):
