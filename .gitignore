@@ -9,6 +9,8 @@ maestro_dataset
 *.sync*
 .DS_Store
 *.gp5
+*.cpr
+*.bak
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
