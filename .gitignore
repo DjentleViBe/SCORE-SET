@@ -11,6 +11,7 @@ maestro_dataset
 *.gp5
 *.cpr
 *.bak
+maestro*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
