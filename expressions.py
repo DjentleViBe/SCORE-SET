@@ -23,6 +23,23 @@ def bend_note(song, beat_in_measure, indices_to_increment, filename):
         song.tracks[0].measures[measure].voices[0].beats[beat_index].notes[0].effect.bend = bend_beat.notes[0].effect.bend
     return song
 
+def trem_note(song, beat_in_measure, indices_to_increment, filename):
+    song_trem = gp.parse(filename)
+    trem_beat = song_trem.tracks[0].measures[0].voices[0].beats[0]
+    for iti in indices_to_increment:
+        measure, beat_index = find_insert_index(beat_in_measure, iti)
+        song.tracks[0].measures[measure].voices[0].beats[beat_index].notes[0].effect.isTremoloBar = True
+        song.tracks[0].measures[measure].voices[0].beats[beat_index].effect.tremoloBar = trem_beat.notes[0].beat.effect.tremoloBar
+    return song
+
+def slide_note(song, beat_in_measure, indices_to_increment, filename):
+    song_slide = gp.parse(filename)
+    slide_beat = song_slide.tracks[0].measures[0].voices[0].beats[0]
+    for iti in indices_to_increment:
+        measure, beat_index = find_insert_index(beat_in_measure, iti)
+        song.tracks[0].measures[measure].voices[0].beats[beat_index].notes[0].effect.slides = slide_beat.notes[0].effect.slides
+    return song
+
 def harmonic(song, beat_in_measure, indices_to_increment):
     song_harmonic_1 = gp.parse('./gprofiles/gp5_templates/harmonic.gp5')
     harmonic_1_beat = song_harmonic_1.tracks[0].measures[0].voices[0].beats[0]
@@ -47,9 +64,7 @@ def insertexpressions(song):
 
     EXPR_PERCENTAGE = 0.2
     EXPR_COUNT = int(EXPR_PERCENTAGE * total_beats)
-    # print(EXPR_COUNT)
-    # print(ratios)
-    # int(EXPR_COUNT * ratios[0])
+
     indices_to_increment = random.sample(range(total_beats), int(EXPR_COUNT))
 
     # Step 2: Split these indices into groups based on the percentages
@@ -76,6 +91,14 @@ def insertexpressions(song):
     for i in range(1, 8):
         print("bend_note_" + str(i) + " :", len(grouped_indices[i]))
         song = bend_note(song, beat_in_measure, grouped_indices[i],"./gprofiles/gp5_templates/bend_" + str(i) + ".gp5")
+
+    for j in range(1, 6):
+        print("trem_bar_" + str(j) + " :", len(grouped_indices[j + i]))
+        song = trem_note(song, beat_in_measure, grouped_indices[j + i],"./gprofiles/gp5_templates/trem_" + str(j) + ".gp5")
+
+    for k in range(1, 7):
+        print("slide_note_" + str(k) + " :", len(grouped_indices[i + j + k]))
+        song = slide_note(song, beat_in_measure, grouped_indices[i + j + k],"./gprofiles/gp5_templates/slide_" + str(k) + ".gp5")
 
     print("harmonic :", len(grouped_indices[21]))
     song = harmonic(song, beat_in_measure, grouped_indices[21])
