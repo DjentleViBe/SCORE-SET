@@ -12,6 +12,9 @@ maestro_dataset
 *.cpr
 *.bak
 maestro*
+*.mid
+midis_dataset/**/*
+GiantMIDI-PIano/**
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
