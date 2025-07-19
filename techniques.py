@@ -24,40 +24,43 @@ LABELS = ['BEND_NOTE_1',
 'DEAD_NOTE',
 'HAMMER',
 'VIBRATO',
-'HARMONIC']
+'HARMONIC',
+'PALM_MUTE']
 
-VALUES = [2477, 
+VALUES = [758, 
 0,
-1256,
+45,
 0,
-1765,
-1550,
-600,
-321,
-1056,
-1005,
-678,
-1900,
-6165,
-2304,
-62,
-30,
-669,
-680,
-2140,
-250,
-3013,
-2253]
+880,
+212,
+1230,
+104,
+0,
+355,
+837,
+72,
+6000,
+1831,
+29,
+0,
+635,
+666,
+918,
+933,
+11,
+3001,
+31930]
 
 def create_accents():
     total = sum(VALUES)
-
+    total = 6290 * 32
     ratios = [v / total for v in VALUES]
 
     plt.figure(figsize=(6,4))
     plt.title('Accent occurences')
     plt.bar(LABELS, ratios, color = 'k')
     plt.ylabel('Count ratio')
+    plt.yscale('log')
     #plt.tight_layout()
     plt.xticks(rotation = 90, ha = 'right', fontsize = 7)
     plt.subplots_adjust(bottom=0.25)
