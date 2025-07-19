@@ -3,3 +3,4 @@ tqdm
 pyguitarpro
 mido
 matplotlib
+gdown
