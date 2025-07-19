@@ -75,6 +75,12 @@ def dead(song, beat_in_measure, indices_to_increment):
         song.tracks[0].measures[measure].voices[0].beats[beat_index].notes[0].type = dead_beat.notes[0].type
     return song
 
+def palmmute(song, beat_in_measure, indices_to_increment):
+    for iti in indices_to_increment:
+        measure, beat_index = find_insert_index(beat_in_measure, iti)
+        song.tracks[0].measures[measure].voices[0].beats[beat_index].notes[0].effect.palmMute = True 
+    return song
+
 def insertexpressions(song):
     # calculate the total number of beats in the song
     total_beats = 0
@@ -86,7 +92,7 @@ def insertexpressions(song):
         beat_in_measure.append(total_beats)
         measure_count += 1
     print("Total measures", measure_count)
-    total = sum(VALUES)
+    total = 6208 * 32
     ratios = [round(v / total, 4) for v in VALUES]
 
     EXPR_PERCENTAGE = 0.2
@@ -129,5 +135,9 @@ def insertexpressions(song):
 
     # print("dead :", len(grouped_indices[18]))
     song = dead(song, beat_in_measure, grouped_indices[18])
+
+    song = palmmute(song, beat_in_measure, grouped_indices[22])
+
+
 
     return song
