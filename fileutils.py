@@ -3,6 +3,7 @@ import requests
 from tqdm import tqdm
 import os
 import shutil
+import gdown
 
 def zip_directory(folder_path, zip_name):
     with zipfile.ZipFile(zip_name, 'w', zipfile.ZIP_DEFLATED) as zipf:
@@ -27,18 +28,22 @@ def create_directory(path):
     else:
         os.makedirs(path)
 
-def datasetdownload():
-    # URL of the dataset
-    url = "https://storage.googleapis.com/magentadata/datasets/maestro/v3.0.0/maestro-v3.0.0-midi.zip"
-    local_filename = "maestro-v3.0.0.zip"
+def datasetdownload_gdown(url, local_filename):
+    # Download the folder
+    gdown.download_folder(url, quiet=False, use_cookies=False)
+    with zipfile.ZipFile("./GiantMIDI-PIano/midis_v1.2" + ".zip", 'r') as zip_ref:
+        print("\nExtracting...")
+        zip_ref.extractall(local_filename)
+    
+def datasetdownload(url, local_filename):
 
     # Stream download with progress bar
     response = requests.get(url, stream=True)
     total_size = int(response.headers.get('content-length', 0))
     block_size = 1024  # 1 Kibibyte
 
-    with open(local_filename, 'wb') as file, tqdm(
-        desc="Downloading MAESTRO Dataset",
+    with open(local_filename + ".zip", 'wb') as file, tqdm(
+        desc="Downloading",
         total=total_size,
         unit='iB',
         unit_scale=True,
@@ -49,11 +54,11 @@ def datasetdownload():
             bar.update(len(data))
 
     # Unzip after download
-    with zipfile.ZipFile(local_filename, 'r') as zip_ref:
+    with zipfile.ZipFile(local_filename + ".zip", 'r') as zip_ref:
         print("\nExtracting...")
-        zip_ref.extractall("maestro_dataset")
+        zip_ref.extractall(local_filename)
 
-    print("Done! Dataset is in the 'maestro_dataset' folder.")
+    print("Done! Dataset is in the " + local_filename + " folder.")
 
 def get_all_files_recursive(folder):
     all_files = []
