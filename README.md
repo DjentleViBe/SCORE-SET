@@ -10,7 +10,7 @@ The dataset can be obtained from the latest release
 1. Clone the repository:
 
 ```bash
-git clone 
+git clone https://github.com/DjentleViBe/SCORE-SET.git
 ```
 
 2. Install the requirements
