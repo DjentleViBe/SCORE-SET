@@ -5,3 +5,4 @@ CREATE_ZIP  =   True
 # 1: GiantMIDI
 # 2: Both
 DATASET     =   2
+TUNING      =   [64, 59, 55, 50, 45, 40]
