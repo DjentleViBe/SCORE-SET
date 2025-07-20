@@ -1,0 +1,6 @@
+requests
+tqdm
+pyguitarpro
+mido
+matplotlib
+gdown

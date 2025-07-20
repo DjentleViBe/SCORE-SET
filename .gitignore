@@ -1,3 +1,5 @@
+maestro_dataset
+*.zip
 *.aux
 *.bbl
 *.blg
@@ -6,6 +8,16 @@
 *.out
 *.sync*
 .DS_Store
+*.gp5
+*.cpr
+*.bak
+maestro*
+*.mid
+midis_dataset/**/*
+GiantMIDI-PIano/**
+midis_dataset_gpro
+midis_dataset
+*.gp
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
