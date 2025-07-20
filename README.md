@@ -4,7 +4,7 @@ SCORE-SET [1] is a dataset composed of .gp5 [2] transcribed files, derived from 
 # Download
 The files can either be downloaded directly or prepared with the scripts provided in the repository.
 ## Direct method
-The dataset can be obtained from the latest release
+The dataset can be obtained from the latest [release](https://github.com/DjentleViBe/SCORE-SET/releases).
 
 ## Preparation method
 1. Clone the repository:
@@ -18,7 +18,9 @@ git clone https://github.com/DjentleViBe/SCORE-SET.git
 pip install -r requirements.txt
 ```
 
-3. Run
+3. Download ```gp5_templates.zip``` from the latest [release](https://github.com/DjentleViBe/SCORE-SET/releases). Extract the contents into ```./gprofiles/gp5_templates``` folder.
+
+4. Run
 
 ```bash
 python main.py
