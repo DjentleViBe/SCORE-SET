@@ -1,8 +1,10 @@
+"""Helper functions to process Guitar Pro files"""
+from fractions import Fraction
 import guitarpro as gp
 from guitarhelper import find_string_and_fret, find_closest_string_and_fret
-from fractions import Fraction
 
 def clip_to_nearest_duration(ticks, ticks_per_beat):
+    """Clip midi ticks to nearest duration beat"""
     # Precompute standard durations in ticks
     duration_map = {
         int(ticks_per_beat * 4): 1,       # whole
@@ -74,15 +76,15 @@ def insert_rest_beat(start_tick, ticks_per_beat, voice):
 
     return voice, 1 / duration_val
 
-
 def makegpro(duration, start, noteval, string_tuning, tolerence):
+    """make .gp5 file"""
     song = gp.models.Song()
     song.artist = "DjentleViBe"
     song.tempo = 120  # Set the tempo
     song.tracks[0].name = "Guitar"
     song.tracks[0].channel.instrument = 30
 
-    song.tracks[0].measures[0].hasTimeSignature  = True 
+    song.tracks[0].measures[0].hasTimeSignature  = True
     song.tracks[0].measures[0].timeSignature.denominator.value = 4
     tot_duration = 0
     current_measure = song.tracks[0].measures[0]  # start with the first
@@ -123,7 +125,7 @@ def makegpro(duration, start, noteval, string_tuning, tolerence):
                     # print(f"Warning: Skipping note {note} at tick {start[n_val]} due to string conflict.")
                     continue
             kval_collect.append(k_val - 1)
-        else:  
+        else:
             string_number, fret = find_string_and_fret(note, string_tuning, 23)
             current_beat = gp.Beat(voice=voice)
             current_beat.status = gp.models.BeatStatus.normal
@@ -162,7 +164,6 @@ def makegpro(duration, start, noteval, string_tuning, tolerence):
             beat_collect = []
             note_collect = []
             measure_count += 1
-        
 
     #print(string_collect)
     #print(fret_collect)

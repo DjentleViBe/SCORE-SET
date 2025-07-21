@@ -1,3 +1,4 @@
+"""Helper functions to process .midi files"""
 import mido
 from guitarprohelper import clip_to_nearest_duration
 
@@ -5,10 +6,10 @@ def midi_to_note_label(midi_note: int) -> str:
     """
     Convert a MIDI note number to a note label (e.g., 60 -> "C4").
     """
-    if not (0 <= midi_note <= 127):
+    if not 0 <= midi_note <= 127:
         raise ValueError("MIDI note must be between 0 and 127.")
 
-    note_names = ['C', 'C#', 'D', 'D#', 'E', 'F', 
+    note_names = ['C', 'C#', 'D', 'D#', 'E', 'F',
                   'F#', 'G', 'G#', 'A', 'A#', 'B']
     note_name = note_names[midi_note % 12]
     octave = (midi_note // 12) - 1
@@ -16,9 +17,10 @@ def midi_to_note_label(midi_note: int) -> str:
 
 
 def ticks_to_duration(ticks, tpq):
+    """Ticks to duration"""
     ratio = ticks / tpq  # ratio to quarter note
-    
-    if ratio < 0.375:       # less than dotted 16th (approx)
+
+    if ratio < 0.375:     # less than dotted 16th (approx)
         return 32          # 32nd note
     elif ratio < 0.75:      # less than dotted 8th
         return 16          # 16th note
@@ -29,9 +31,10 @@ def ticks_to_duration(ticks, tpq):
     elif ratio < 6:
         return 2           # half note
     else:
-        return 1           # whole note
+        return 1         # whole note
 
 def midi_extract(midi_path, total_measure):
+    """Midi extraction from file"""
     mid = mido.MidiFile(midi_path)
     duration_note = []
     start_tick = []

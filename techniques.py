@@ -1,9 +1,10 @@
-import matplotlib.pyplot as plt
+"""Techniques list"""
 import os
+import matplotlib.pyplot as plt
 current_file_path = os.path.abspath(__file__)
 current_dir = os.path.dirname(current_file_path)
 
-LABELS = ['BEND_NOTE_1', 
+LABELS = ['BEND_NOTE_1',
 'BEND_NOTE_2',
 'BEND_NOTE_3',
 'BEND_NOTE_4',
@@ -27,7 +28,7 @@ LABELS = ['BEND_NOTE_1',
 'HARMONIC',
 'PALM_MUTE']
 
-VALUES = [758, 
+VALUES = [758,
 0,
 45,
 0,
@@ -52,6 +53,7 @@ VALUES = [758,
 31930]
 
 def create_accents():
+    """Create statistics of various accents"""
     total = sum(VALUES)
     total = 6290 * 32
     ratios = [v / total for v in VALUES]
