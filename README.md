@@ -7,6 +7,7 @@ The files can either be downloaded directly or prepared with the scripts provide
 The dataset can be obtained from the latest [release](https://github.com/DjentleViBe/SCORE-SET/releases).
 
 ## Preparation method
+It is recommended to run the following in an environment: 
 1. Clone the repository:
 
 ```bash
@@ -26,7 +27,7 @@ pip install -r requirements.txt
 python main.py
 ```
 
-Datasets ```maestro_gpro-v1.0.0.zip```and ```midis_gpro-v1.0.0.zip``` containing ```.gp5``` files are output to the project root directory.
+Datasets ```maestro_gpro-v1.0.0.zip``` and ```midis_gpro-v1.0.0.zip``` containing ```.gp5``` files are output to the project root directory.
 
 # References
 [1]
