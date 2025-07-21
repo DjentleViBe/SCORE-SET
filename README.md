@@ -26,7 +26,7 @@ pip install -r requirements.txt
 python main.py
 ```
 
-```maestro_gpro-v1.0.0.zip```and ```midis_gpro-v1.0.0.zip``` are output to the project root directory.
+Datasets ```maestro_gpro-v1.0.0.zip```and ```midis_gpro-v1.0.0.zip``` containing ```.gp5``` files are output to the project root directory.
 
 # References
 [1]
