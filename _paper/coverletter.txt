@@ -7,14 +7,15 @@ The resulting dataset, which I call SCORE-SET, consists of tablatures for guitar
 symbolic music modeling, transcription, generative models, and multimodal tasks involving guitar as the main instrument.
 
 In addition to releasing the dataset under a permissive license:
-- Guitar Expressions added from statistical analysis of author transcribed tablature from publicly available music sources.
-- Preprocessing tools to read MIDI.
-- Export functions to output .gp5 files
+- Guitar Expressions are added from statistical analysis of author transcribed tablature from publicly available music sources.
+- Preprocessing tools are provided to read MIDI.
+- Export functions handle .gp5 output files
 
 I believe the SCORE-SET dataset will be of broad interest to the machine learning community, particularly those working on music understanding, 
-generative models, and structured sequence learning. To my knowledge, it is one of the largest and most musically diverse symbolic guitar datasets
-released to date.
+generative models, and structured sequence learning with concentration on guitars. 
+To my knowledge, it is only symbolic guitar dataset in tablature form with added diverse expressions released to date.
 
+The dataset can be downloaded from the repo : https://github.com/DjentleViBe/SCORE-SET
 The submission has not been published or submitted elsewhere. I welcome any feedback and thank you for your time and consideration.
 
 Sincerely,  
