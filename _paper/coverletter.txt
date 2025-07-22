@@ -1,0 +1,21 @@
+Dear Editors,
+
+I am pleased to submit a manuscript titled "SCORE-SET: A dataset of GuitarPro files for Music Phrase Generation and Sequence Learning" for consideration in the Journal of Machine Learning Research.
+
+This paper presents a curated and cleaned collection of Guitar Pro tablature files sourced from publicly available MAESTRO and GiantMIDI datasets. 
+The resulting dataset, which I call SCORE-SET, consists of tablatures for guitar instrument. It is intended to serve as a resource for 
+symbolic music modeling, transcription, generative models, and multimodal tasks involving guitar as the main instrument.
+
+In addition to releasing the dataset under a permissive license:
+- Guitar Expressions added from statistical analysis of author transcribed tablature from publicly available music sources.
+- Preprocessing tools to read MIDI.
+- Export functions to output .gp5 files
+
+I believe the SCORE-SET dataset will be of broad interest to the machine learning community, particularly those working on music understanding, 
+generative models, and structured sequence learning. To my knowledge, it is one of the largest and most musically diverse symbolic guitar datasets
+released to date.
+
+The submission has not been published or submitted elsewhere. I welcome any feedback and thank you for your time and consideration.
+
+Sincerely,  
+Vishakh Begari
