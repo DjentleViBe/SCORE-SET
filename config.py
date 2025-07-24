@@ -1,5 +1,5 @@
-DOWNLOAD    =   False
-PROCESS     =   False
+DOWNLOAD    =   True
+PROCESS     =   True
 CREATE_ZIP  =   True
 # 0: Maestro
 # 1: GiantMIDI
