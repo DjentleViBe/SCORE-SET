@@ -77,7 +77,7 @@ such as MIDI. While datasets like
 \cite{bradshaw2025ariamididatasetpianomidi}
 \cite{kong2022giantmidipianolargescalemididataset}
 have enabled research in mostly piano music generation, there remains a lack of 
-large-scale, high-quality resources tailored specifically to the guitar—a highly 
+large-scale, high-quality resources tailored specifically to the guitar a highly 
 expressive and technically diverse instrument.
 
 Guitar music presents unique challenges for 
@@ -184,8 +184,8 @@ measure length, the measure was dynamically adjusted to accommodate them.
 Since the original datasets consist of piano-based transcriptions, mapping 
 them to guitar fret positions poses a challenge. For chord voicings, the root
 note was first fixed, and subsequent notes were assigned to consecutive 
-strings. If multiple notes fell on the same string, their pitch was adjusted—by 
-adding or subtracting octaves—until a playable fret position was found on 
+strings. If multiple notes fell on the same string, their pitch was adjusted by 
+adding or subtracting octaves until a playable fret position was found on 
 different strings.
 
 \section{Statistics}
@@ -195,8 +195,8 @@ created through transcription of publicly available audio
 recordings of modern metal songs. The transcriptions were 
 created by ear and focused specifically on expressive guitar 
 techniques. Existing symbolic music datasets often lack 
-detailed guitar-specific expressions such as palm muting, 
-tremolo picking, or slides—elements that are crucial to the 
+detailed guitar specific expressions such as palm muting, 
+tremolo picking, or slides elements that are crucial to the 
 stylistic integrity of modern metal music. Since these 
 articulations are rarely annotated in standard MIDI or 
 tablature datasets, manual transcription was necessary to 
@@ -228,7 +228,7 @@ notes.
 
 After expression augmentation, the sequences were exported 
 to .gp5 files using the PyGuitarPro~\cite{PyGuitarPro} library, preserving all 
-note-level attributes and guitar-specific articulations. 
+note level attributes and guitar specific articulations. 
 This allowed for compatibility with standard tablature 
 software and ensured that the data could be both inspected and 
 rendered in a musically meaningful format. The dataset is made available 
