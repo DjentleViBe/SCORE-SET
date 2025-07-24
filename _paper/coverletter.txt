@@ -11,6 +11,13 @@ In addition to releasing the dataset under a permissive license:
 - Preprocessing tools are provided to read MIDI.
 - Export functions handle .gp5 output files
 
+Since the submission presents a dataset for music generation tasks using LLMs, I would like to suggest the folowing Action Editors:
+- Brian Kulis, Boston University for his focus on audio applications.
+- Kai-Wei Chang, UCLA for their competence in statistics and BERT.
+- Quanquan Gu, UCLA for expertise in LLM and statistics.
+- Honglak Lee, Google and University of Michigan, Ann Arbor for their background in generative modeling.
+- Weijie Su, University of Pennsylvania for proficiency in LLMs and deep learning.
+
 I believe the SCORE-SET dataset will be of broad interest to the machine learning community, particularly those working on music understanding, 
 generative models, and structured sequence learning with concentration on guitars. 
 To my knowledge, it is only symbolic guitar dataset in tablature form with added diverse expressions released to date.
