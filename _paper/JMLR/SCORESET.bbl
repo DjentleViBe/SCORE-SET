@@ -1,0 +1,73 @@
+\begin{thebibliography}{9}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Abakumov(2014)]{PyGuitarPro}
+Sviatoslav Abakumov.
+\newblock Pyguitarpro.
+\newblock \url{https://pyguitarpro.readthedocs.io/en/stable/}, 2014.
+\newblock Revision c88d0350.
+
+\bibitem[Begari(2025)]{SCORESET}
+Vishakh Begari.
+\newblock Score-set.
+\newblock \url{https://github.com/DjentleViBe/SCORE-SET}, 2025.
+\newblock Accessed: 2025-07-11.
+
+\bibitem[Bertin{-}Mahieux et~al.(2011)Bertin{-}Mahieux, Ellis, Whitman, and
+  Lamere]{bertinmahieux-2011-million}
+Thierry Bertin{-}Mahieux, Daniel P.~W. Ellis, Brian Whitman, and Paul Lamere.
+\newblock The million song dataset.
+\newblock In Anssi Klapuri and Colby Leider, editors, \emph{Proceedings of the
+  12th International Society for Music Information Retrieval Conference,
+  {ISMIR} 2011, Miami, Florida, USA, October 24-28, 2011}, pages 591--596.
+  University of Miami, 2011.
+\newblock URL \url{http://ismir2011.ismir.net/papers/OS6-1.pdf}.
+
+\bibitem[Bradshaw and Colton(2025)]{bradshaw2025ariamididatasetpianomidi}
+Louis Bradshaw and Simon Colton.
+\newblock Aria-midi: A dataset of piano midi files for symbolic music modeling,
+  2025.
+\newblock URL \url{https://arxiv.org/abs/2504.15071}.
+
+\bibitem[Gemmeke et~al.(2017)Gemmeke, Ellis, Freedman, Jansen, Lawrence, Moore,
+  Plakal, and Ritter]{7952261}
+Jort~F. Gemmeke, Daniel P.~W. Ellis, Dylan Freedman, Aren Jansen, Wade
+  Lawrence, R.~Channing Moore, Manoj Plakal, and Marvin Ritter.
+\newblock Audio set: An ontology and human-labeled dataset for audio events.
+\newblock In \emph{2017 IEEE International Conference on Acoustics, Speech and
+  Signal Processing (ICASSP)}, pages 776--780, 2017.
+\newblock \doi{10.1109/ICASSP.2017.7952261}.
+
+\bibitem[Hawthorne et~al.(2019)Hawthorne, Stasyuk, Roberts, Simon, Huang,
+  Dieleman, Elsen, Engel, and Eck]{hawthorne2018enabling}
+Curtis Hawthorne, Andriy Stasyuk, Adam Roberts, Ian Simon, Cheng-Zhi~Anna
+  Huang, Sander Dieleman, Erich Elsen, Jesse Engel, and Douglas Eck.
+\newblock Enabling factorized piano music modeling and generation with the
+  {MAESTRO} dataset.
+\newblock In \emph{International Conference on Learning Representations}, 2019.
+\newblock URL \url{https://openreview.net/forum?id=r1lYRjC9F7}.
+
+\bibitem[Kong et~al.(2022)Kong, Li, Chen, and
+  Wang]{kong2022giantmidipianolargescalemididataset}
+Qiuqiang Kong, Bochen Li, Jitong Chen, and Yuxuan Wang.
+\newblock Giantmidi-piano: A large-scale midi dataset for classical piano
+  music, 2022.
+\newblock URL \url{https://arxiv.org/abs/2010.07061}.
+
+\bibitem[Peracha(2022)]{peracha2022jsfakechoralessynthetic}
+Omar Peracha.
+\newblock Js fake chorales: a synthetic dataset of polyphonic music with human
+  annotation, 2022.
+\newblock URL \url{https://arxiv.org/abs/2107.10388}.
+
+\bibitem[Thickstun et~al.(2017)Thickstun, Harchaoui, and
+  Kakade]{thickstun2017learningfeaturesmusicscratch}
+John Thickstun, Zaid Harchaoui, and Sham Kakade.
+\newblock Learning features of music from scratch, 2017.
+\newblock URL \url{https://arxiv.org/abs/1611.09827}.
+
+\end{thebibliography}

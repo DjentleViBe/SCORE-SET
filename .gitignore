@@ -1,7 +1,6 @@
 maestro_dataset
 *.zip
 *.aux
-*.bbl
 *.blg
 *.fdb*
 *.fls
