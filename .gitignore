@@ -17,6 +17,7 @@ GiantMIDI-PIano/**
 midis_dataset_gpro
 midis_dataset
 *.gp
+SCORE-SET_v*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
