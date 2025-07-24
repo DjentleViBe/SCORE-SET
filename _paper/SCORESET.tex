@@ -77,7 +77,7 @@ such as MIDI. While datasets like
 \cite{bradshaw2025ariamididatasetpianomidi}
 \cite{kong2022giantmidipianolargescalemididataset}
 have enabled research in mostly piano music generation, there remains a lack of 
-large-scale, high-quality resources tailored specifically to the guitar a highly 
+large-scale, high-quality resources tailored specifically to the guitar, a highly 
 expressive and technically diverse instrument.
 
 Guitar music presents unique challenges for 
@@ -153,8 +153,7 @@ Smoothly moving up or down the fretboard without lifting off on the string, crea
 \label{fig:slide}
 \end{figure}
 \subsubsection{Dead note}
-(muted note or ghost note)
-Muting the string to produce a percussive sound.
+Muted note or ghost note - Muting the string to produce a percussive sound.
 \subsubsection{Hammer on / pull off}
 Allows playing 2 notes in succession without picking the second note. Pressing down onto a higher fret to play a note without picking it, producing smooth legato transition between notes. 
 Pulling off a higher fretted note while the lower fret note is still pressed.
@@ -182,14 +181,29 @@ measure length, the measure was dynamically adjusted to accommodate them.
 
 \subsection{String and fret}
 Since the original datasets consist of piano-based transcriptions, mapping 
-them to guitar fret positions poses a challenge. For chord voicings, the root
+them to guitar fret positions poses a challenge. A custom script was developed to 
+translate piano MIDI files into guitar tablature by mapping MIDI 
+note pitches to plausible fretboard positions. Each MIDI note was first 
+converted to its corresponding pitch class, and then assigned to 
+a string-fret combination based on the tuning of the guitar. 
+To ensure realistic playability, the algorithm prioritized lower fret 
+positions and avoided excessive string skipping. In cases where 
+multiple valid positions existed for a single note, a heuristic based on 
+finger reach and melodic continuity was used to determine the most natural placement. 
+This conversion preserved the timing and duration of the original piano notes while 
+rendering them in a format suitable for guitar performance. For chord voicings, the root
 note was first fixed, and subsequent notes were assigned to consecutive 
 strings. If multiple notes fell on the same string, their pitch was adjusted by 
 adding or subtracting octaves until a playable fret position was found on 
 different strings.
 
 \section{Statistics}
-
+\begin{figure}[H]
+\centering
+\includegraphics[clip, width=0.8\linewidth]{accent_probability.pdf}
+\caption{Percentages of techniques.}
+\label{fig:accent}
+\end{figure}
 For this study, a dataset of guitar tablatures was manually 
 created through transcription of publicly available audio 
 recordings of modern metal songs. The transcriptions were 
@@ -206,12 +220,6 @@ performance suited for expression-aware generative modeling.
 The expression statistics were calculated over a total of 198656 notes, with approximately 25.39 \% 
 of them featuring accents.
 
-\begin{figure}[H]
-\centering
-\includegraphics[clip, width=0.91\linewidth]{accent_probability.pdf}
-\caption{Percentages of techniques.}
-\label{fig:accent}
-\end{figure}
 
 \begin{figure}[H]
 \centering
