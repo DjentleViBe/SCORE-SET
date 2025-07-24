@@ -189,28 +189,50 @@ adding or subtracting octaves—until a playable fret position was found on
 different strings.
 
 \section{Statistics}
-For this study, a dataset of guitar tablatures was manually created through transcription of publicly available audio
-recordings of modern metal songs. The transcriptions were created by ear and focused on guitar expressions used. 
+
+For this study, a dataset of guitar tablatures was manually 
+created through transcription of publicly available audio 
+recordings of modern metal songs. The transcriptions were 
+created by ear and focused specifically on expressive guitar 
+techniques. Existing symbolic music datasets often lack 
+detailed guitar-specific expressions such as palm muting, 
+tremolo picking, or slides—elements that are crucial to the 
+stylistic integrity of modern metal music. Since these 
+articulations are rarely annotated in standard MIDI or 
+tablature datasets, manual transcription was necessary to 
+ensure expressive accuracy and genre fidelity. The resulting 
+dataset offers a more nuanced representation of guitar 
+performance suited for expression-aware generative modeling.
 The expression statistics were calculated over a total of 198656 notes, with approximately 25.39 \% 
 of them featuring accents.
 
-\begin{figure}[ht]
+\begin{figure}[H]
 \centering
-\includegraphics[clip, width=0.6\linewidth]{accent_probability.pdf}
+\includegraphics[clip, width=0.91\linewidth]{accent_probability.pdf}
 \caption{Percentages of techniques.}
 \label{fig:accent}
 \end{figure}
 
 \begin{figure}[H]
 \centering
-\includegraphics[trim={20 620 200 100}, clip, width=0.6\linewidth]{outputexample.pdf}
+\includegraphics[trim={20 620 200 100}, clip, width=0.8\linewidth]{outputexample.pdf}
 \caption{Tablature showing palm mute, bend, harmonic and custom measure.}
 \label{fig:gpro}
 \end{figure}
+Accents were added to the original dataset at random, 
+following the expression ratios derived from 
+Figure~\ref{fig:accent}. Although these percentages were 
+based on individual musical notes, tremolo is an exception, 
+as it is applied to an entire beat, which may contain multiple 
+notes.
 
-Accents were added to the orignal dataset at random with the ratios derived from Figure~\ref{fig:accent}.
-Although the percentages were derived from muical notes, the Tremolo is an exception in that it is applied 
-to the whole beat which can contain multiple notes.
+After expression augmentation, the sequences were exported 
+to .gp5 files using the PyGuitarPro~\cite{PyGuitarPro} library, preserving all 
+note-level attributes and guitar-specific articulations. 
+This allowed for compatibility with standard tablature 
+software and ensured that the data could be both inspected and 
+rendered in a musically meaningful format. The dataset is made available 
+at~\cite{SCORESET}.
 
 \acks{This research received no specific grant from any funding agency in the public, commercial, or not-for-profit sectors.}
 
