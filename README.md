@@ -1,6 +1,8 @@
 # SCORE-SET
 SCORE-SET [1] is a dataset composed of .gp5 [2] transcribed files, derived from the GiantMIDI [3] and MAESTRO [4] datasets. Guitar-specific expressions have been added based on the statistical patterns illustrated in [Accents](./_paper/accent_probability.pdf)
 
+Paper : https://arxiv.org/abs/2507.18723
+
 # Download
 The files can either be downloaded directly or prepared with the scripts provided in the repository.
 ## Direct method
